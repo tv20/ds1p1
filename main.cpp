@@ -19,13 +19,8 @@ int main()
 	programManager.ReadEncryptedFile(toHash);
 
 	Hashing hashing(toHash);
-/*
-	for(unsigned int i = 0; i < toHash.size(); i++)
-	{
-		std::cout << std::setw(14) << toHash.at(i).GetUserId()
-			  << std::setw(14) << toHash.at(i).GetEncryptedPw()
-			  << std::endl;
-	}
-*/
+	
+	hashing.Test();
+	
 	return 0;
 }

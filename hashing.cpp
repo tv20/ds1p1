@@ -10,7 +10,7 @@ Hashing::Hashing(std::vector<UserData> toHash)
 		hashNumber = Hash(toHash.at(i).GetUserId());
 		this->linkedList[hashNumber].InsertAtHead(toHash.at(i).GetUserId(),toHash.at(i).GetEncryptedPw());		
 	}
-
+/*
 	//table used for visualization of linked list
 	Node* tempPointer;
 	
@@ -37,9 +37,8 @@ Hashing::Hashing(std::vector<UserData> toHash)
 		{
 			std::cout << "linkedList[" << i << "]: " << std::endl;
 		}
-
 	}
-
+*/
 }
 
 int Hashing::Hash(std::string userId)
@@ -136,10 +135,8 @@ int Hashing::Hash(std::string userId)
 			default:
 				break;
 		}	
-
 		digit[i] = hashAlgorithm[position];
 	}
-
 
 	//need enough memory to store total using the hashing algorithm, ranges from 0 - 2^64
 	unsigned long long int total = 13;
@@ -159,4 +156,112 @@ int Hashing::Hash(std::string userId)
 //	std::cout << total << std::endl;
 
 	return total % this->TABLESIZE;
+}
+
+void Hashing::Test()
+{
+	this->openTest.open("raw.txt");
+	
+	if(this->openTest.fail())
+	{
+		std::cout << "ERROR" << std::endl;
+		exit(-1);
+	}
+
+	std::vector<UserData> toTest;
+	std::string tempName;
+	std::string tempPw;
+
+	for(int i = 0; i < 5; i++)
+	{
+		this->openTest >> tempName >> tempPw;
+		UserData tempUser(tempName, tempPw, 0);
+		toTest.push_back(tempUser);
+	}
+	std::cout << std::setw(44) << "" << std::setw(20) << "ENCRYPTED" << std::endl;
+	std::cout << std::setw(41) << "" << std::setw(20) << "IN" << std::endl;
+	std::cout << std::setw(15) << std::left << "NAME"
+		  << std::setw(20) << std::left << "UNENCRYPTED"
+		  << std::setw(20) << std::left << "ENCRYPTED"
+		  << std::setw(20) << std::left << "LINKEDLIST"
+		  << std::endl;
+
+	for(int i = 0; i < 65; i++)
+	{
+		std::cout << "-";
+	}
+	
+	std::cout << std::endl << "PASS:" << std::endl << std::endl;
+
+	//test for passing
+	for(int i = 0; i < 5; i++)
+	{
+		int afterHash = Hash(toTest.at(i).GetUserId());
+		Node* listPosition = this->linkedList[afterHash].GetHead();
+		
+		while(listPosition->GetUserId() != toTest.at(i).GetUserId())
+		{
+			listPosition = listPosition->GetNextNode();
+		}
+		
+		toTest.at(i).SetEncryptedPw();
+				
+		if(toTest.at(i).GetEncryptedPw() == listPosition->GetEncryptedPw())
+		{
+			
+			std::cout << std::setw(15) << std::left << toTest.at(i).GetUserId()
+			          << std::setw(20) << std::left << toTest.at(i).GetRandomPw()
+				  << std::setw(14) << std::left << toTest.at(i).GetEncryptedPw() << "=     "
+				  << std::setw(20) << std::left << listPosition->GetEncryptedPw()
+				  << std::endl;
+		}
+		else
+		{
+			std::cout << std::setw(15) << std::left << toTest.at(i).GetUserId()
+			          << std::setw(20) << std::left << toTest.at(i).GetRandomPw()
+				  << std::setw(13) << std::left << toTest.at(i).GetEncryptedPw() << "!=     "
+				  << std::setw(20) << std::left << listPosition->GetEncryptedPw()
+				  << std::endl;
+		}
+	}
+
+	for(int i = 0; i < 65; i++)
+	{
+		std::cout << "-";
+	}
+	
+	std::cout << std::endl << "FAIL:" << std::endl << std::endl;
+
+	//test for failing
+	for(int i = 0; i < 5; i++)
+	{
+		int afterHash = Hash(toTest.at(i).GetUserId());
+		Node* listPosition = this->linkedList[afterHash].GetHead();
+		
+		while(listPosition->GetUserId() != toTest.at(i).GetUserId())
+		{
+			listPosition = listPosition->GetNextNode();
+		}
+		
+		toTest.at(i).ChangeOneLetter();
+		toTest.at(i).SetEncryptedPw();
+			
+		if(toTest.at(i).GetEncryptedPw() == listPosition->GetEncryptedPw())
+		{
+			std::cout << std::setw(15) << std::left << toTest.at(i).GetUserId()
+			          << std::setw(20) << std::left << toTest.at(i).GetRandomPw()
+				  << std::setw(14) << std::left << toTest.at(i).GetEncryptedPw() << "=     "
+				  << std::setw(20) << std::left << listPosition->GetEncryptedPw()
+				  << std::endl;
+		}
+		else
+		{
+			std::cout << std::setw(15) << std::left << toTest.at(i).GetUserId()
+			          << std::setw(20) << std::left << toTest.at(i).GetRandomPw()
+				  << std::setw(13) << std::left << toTest.at(i).GetEncryptedPw() << "!=     "
+				  << std::setw(20) << std::left << listPosition->GetEncryptedPw()
+				  << std::endl;
+		}
+	}
+	this->openTest.close();
 }

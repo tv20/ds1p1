@@ -21,6 +21,7 @@ public:
 	std::string GetUserId();
 	std::string GetRandomPw();
 	std::string GetEncryptedPw();
+	void ChangeOneLetter();
 };
 
 #endif

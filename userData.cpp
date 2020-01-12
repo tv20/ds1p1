@@ -191,3 +191,15 @@ std::string UserData::GetEncryptedPw()
 {
 	return this->encryptedPw;
 }
+
+void UserData::ChangeOneLetter()
+{
+	if(this->encryptedPw.at(0) > 'a')
+	{
+		this->randomPw.at(0) = --this->randomPw.at(0);
+	}
+	else
+	{
+		this->randomPw.at(0) = ++this->randomPw.at(0);
+	}
+}

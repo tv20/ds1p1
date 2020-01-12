@@ -14,6 +14,7 @@ class UserData{
 	void SetEncryptedPw();
 public:
 	UserData();
+	UserData(std::string,std::string);
 	void SetUserId(std::string);
 	void SetRandomPw();
 	std::string GetUserId();

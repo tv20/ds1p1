@@ -57,10 +57,23 @@ void ProgramManager::OutputFile()
 	this->writeFile.close();
 }
 
-void ProgramManager::TestProgram()
+void ProgramManager::ReadEncryptedFile(std::vector<UserData> &toHash)
 {
-	for(unsigned int i = 0; i < this->userData.size(); i++)
+	std::string tempUserId;
+	std::string tempEncryptedPw;
+	
+	this->openFile.open("encrypted.txt");
+
+	if(this->openFile.fail())
 	{
-		userData.at(i).PrintInfo();
+		std::cout << "ERROR" << std::endl << std::endl;
+		exit(-1);
 	}
+	
+	while(this->openFile >> tempUserId >> tempEncryptedPw)
+	{
+		UserData tempToHash(tempUserId, tempEncryptedPw);
+		toHash.push_back(tempToHash);
+	}
+
 }

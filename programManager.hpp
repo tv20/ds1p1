@@ -15,7 +15,7 @@ class ProgramManager{
 public:
 	ProgramManager(); //opens lastNames.txt in constructor
 	void OutputFile();
-	void TestProgram();
+	void ReadEncryptedFile(std::vector<UserData> &);
 };
 
 #endif

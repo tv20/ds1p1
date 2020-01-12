@@ -13,7 +13,8 @@ int main()
 
 	programManager.OutputFile();
 
-//	programManager.TestProgram();
+	std::vector<UserData> toHash;
+	programManager.ReadEncryptedFile(toHash);
 
 	return 0;
 }

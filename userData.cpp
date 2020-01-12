@@ -2,7 +2,16 @@
 
 UserData::UserData()
 {
+	this->userId = "";
+	this->randomPw = "";
+	this->encryptedPw = "";
+}
 
+UserData::UserData(std::string userId, std::string encryptedPw)
+{
+	this->userId = userId;
+	this->randomPw = "";
+	this->encryptedPw = encryptedPw;
 }
 
 void UserData::SetUserId(std::string userId)
@@ -176,5 +185,7 @@ std::string UserData::GetEncryptedPw()
 
 void UserData::PrintInfo()
 {
-	std::cout << std::setw(20) << this->userId << std::setw(20) << this->randomPw << std::setw(20) << this->encryptedPw << std::endl;
+	std::cout << std::setw(15) << this->userId 
+		  << std::setw(15) << this->randomPw 
+		  << std::setw(15) << this->encryptedPw << std::endl;
 }

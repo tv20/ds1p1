@@ -1,6 +1,8 @@
 #ifndef HASHING_HPP
 #define HASHING_HPP
 
+#include <cctype>
+#include <array>
 #include "userData.hpp"
 #include "linkedList.hpp"
 

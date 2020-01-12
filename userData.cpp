@@ -168,6 +168,8 @@ void UserData::SetEncryptedPw()
 				secondPosition = 25;
 				letterToEncrypt = vigenere[position][secondPosition];
 				break;
+			default:
+				break;
 		}		
 		tempEncryptedPw[i] = letterToEncrypt;
 	}

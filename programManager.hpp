@@ -13,8 +13,10 @@ class ProgramManager{
 	std::ofstream writeFile;
 	void LoadNames();
 public:
-	ProgramManager(); //opens lastNames.txt in constructor
-	void OutputFile();
+	ProgramManager();        
+	void WriteRawFile();
+	void ReadRawFile();      
+	void WriteEncryptedFile(std::vector<UserData>);
 	void ReadEncryptedFile(std::vector<UserData> &);
 };
 

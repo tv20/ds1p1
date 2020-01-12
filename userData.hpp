@@ -6,21 +6,21 @@
 #include <cstdlib>
 #include <ctime>
 #include <iomanip>
+#include <vector>
 
 class UserData{
 	std::string userId;
 	std::string randomPw;
 	std::string encryptedPw;
-	void SetEncryptedPw();
 public:
 	UserData();
-	UserData(std::string,std::string);
+	UserData(std::string,std::string,bool);
 	void SetUserId(std::string);
 	void SetRandomPw();
+	void SetEncryptedPw();
 	std::string GetUserId();
 	std::string GetRandomPw();
 	std::string GetEncryptedPw();
-	void PrintInfo(); //function to print out info for testing
 };
 
 #endif

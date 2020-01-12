@@ -34,7 +34,7 @@ void ProgramManager::LoadNames()
 	
 }
 
-void ProgramManager::OutputFile()
+void ProgramManager::WriteRawFile()
 {
 	this->writeFile.open("raw.txt");
 	
@@ -46,12 +46,43 @@ void ProgramManager::OutputFile()
 	}
 
 	this->writeFile.close();
+}
+
+void ProgramManager::ReadRawFile()
+{
+	this->openFile.open("raw.txt");
+	
+	if(this->openFile.fail())
+	{
+		std::cout << "ERROR" << std::endl << std::endl;
+		exit(-1);
+	}
+
+	std::string tempUserId;
+	std::string tempUnencryptedPw;
+	std::vector<UserData> toWrite;
+	
+	while(openFile >> tempUserId >> tempUnencryptedPw)
+	{
+		UserData tempUserData(tempUserId, tempUnencryptedPw, 0);
+		tempUserData.SetEncryptedPw();
+		toWrite.push_back(tempUserData);
+	}
+
+	this->openFile.close();
+
+	WriteEncryptedFile(toWrite);
+}
+
+void ProgramManager::WriteEncryptedFile(std::vector<UserData> toWrite)
+{
 	this->writeFile.open("encrypted.txt");
 
-	for(unsigned int i = 0; i < this->userData.size(); i++)
+	for(unsigned int i = 0; i < toWrite.size(); i++)
 	{
-		this->writeFile << std::setw(15) << std::left << userData.at(i).GetUserId() 
-			 	<< std::setw(15) << std::left << userData.at(i).GetEncryptedPw() << std::endl;
+		this->writeFile << std::setw(15) << std::left << toWrite.at(i).GetUserId() 
+			 	<< std::setw(15) << std::left << toWrite.at(i).GetEncryptedPw() 
+				<< std::endl;
 	}
 
 	this->writeFile.close();
@@ -72,7 +103,7 @@ void ProgramManager::ReadEncryptedFile(std::vector<UserData> &toHash)
 	
 	while(this->openFile >> tempUserId >> tempEncryptedPw)
 	{
-		UserData tempToHash(tempUserId, tempEncryptedPw);
+		UserData tempToHash(tempUserId, tempEncryptedPw, 1);
 		toHash.push_back(tempToHash);
 	}
 

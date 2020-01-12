@@ -7,11 +7,20 @@ UserData::UserData()
 	this->encryptedPw = "";
 }
 
-UserData::UserData(std::string userId, std::string encryptedPw)
+UserData::UserData(std::string userId, std::string password, bool choice)
 {
 	this->userId = userId;
-	this->randomPw = "";
-	this->encryptedPw = encryptedPw;
+	
+	if(choice == 0)
+	{
+		this->randomPw = password;
+		this->encryptedPw = "";
+	}
+	else
+	{
+		this->randomPw = "";
+		this->encryptedPw = password;
+	}
 }
 
 void UserData::SetUserId(std::string userId)
@@ -34,8 +43,6 @@ void UserData::SetRandomPw()
 	}
 
 	this->randomPw = tempPw;
-
-	SetEncryptedPw();
 }
 
 void UserData::SetEncryptedPw()
@@ -181,11 +188,4 @@ std::string UserData::GetRandomPw()
 std::string UserData::GetEncryptedPw()
 {
 	return this->encryptedPw;
-}
-
-void UserData::PrintInfo()
-{
-	std::cout << std::setw(15) << this->userId 
-		  << std::setw(15) << this->randomPw 
-		  << std::setw(15) << this->encryptedPw << std::endl;
 }

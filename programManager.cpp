@@ -1,3 +1,9 @@
+/***************************************************
+Thati Vang
+programManager.cpp
+Project 1
+***************************************************/
+
 #include "programManager.hpp"
 
 ProgramManager::ProgramManager()
@@ -22,16 +28,14 @@ void ProgramManager::LoadNames()
 
 	while(std::getline(this->openFile, tempName, ' '))
 	{
-		//move file to next line
 		this->openFile.ignore(50,'\n');
-	
-		//store userId, generate a random pw and encrypt it into a temp variable	
+			//move to next line
 		tempUserData.SetUserId(tempName);
+			//store userId, generate a random pw
 		tempUserData.SetRandomPw();
-		
+			//a new random password will be set everytime program executes	
 		this->userData.push_back(tempUserData);	
 	}
-	
 }
 
 void ProgramManager::WriteRawFile()
@@ -42,7 +46,6 @@ void ProgramManager::WriteRawFile()
 	{
 		this->writeFile << std::setw(15) << std::left << userData.at(i).GetUserId() 
 			        << std::setw(15) << std::left << userData.at(i).GetRandomPw() << std::endl; 
-		//	 	<< std::setw(15) << std::left << userData.at(i).GetEncryptedPw() << std::endl;
 	}
 
 	this->writeFile.close();

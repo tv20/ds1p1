@@ -7,4 +7,4 @@ main: main.o $(OBJECTS)
 	$(CXX) $(CXXFLAGS) -o $@ $^
 
 clean:
-	$(RM) *.o main raw.txt encrypted.txt
+	$(RM) *.o main raw.txt encrypted.txt linkedList.txt

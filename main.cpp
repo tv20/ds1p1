@@ -1,3 +1,9 @@
+/***************************************************
+Thati Vang
+main.cpp
+Project 1
+***************************************************/
+
 #include <iostream>
 #include <vector>
 #include <ctime>

@@ -1,3 +1,9 @@
+/***************************************************
+Thati Vang
+userData.cpp
+Project 1
+***************************************************/
+
 #include "userData.hpp"
 
 UserData::UserData()
@@ -173,7 +179,6 @@ void UserData::SetEncryptedPw()
 		}		
 		tempEncryptedPw[i] = letterToEncrypt;
 	}
-	
 	this->encryptedPw = tempEncryptedPw;	
 }
 
@@ -194,12 +199,14 @@ std::string UserData::GetEncryptedPw()
 
 void UserData::ChangeOneLetter()
 {
-	if(this->encryptedPw.at(0) > 'a')
+	if(this->randomPw.at(0) == 'a')
 	{
-		this->randomPw.at(0) = --this->randomPw.at(0);
+		this->randomPw.at(0) = ++this->randomPw.at(0);
+			//prevents a from becoming a symbol
 	}
 	else
 	{
-		this->randomPw.at(0) = ++this->randomPw.at(0);
+		this->randomPw.at(0) = --this->randomPw.at(0);
 	}
+
 }

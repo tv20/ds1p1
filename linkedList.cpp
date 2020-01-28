@@ -1,3 +1,9 @@
+/***************************************************
+Thati Vang
+linkedList.cpp
+Project 1
+***************************************************/
+
 #include "linkedList.hpp"
 
 LinkedList::LinkedList()
@@ -25,7 +31,7 @@ void LinkedList::InsertAtHead(std::string userId, std::string encryptedPw)
 {
 	Node* tempNode = new Node(userId, encryptedPw);
 	
-	//set new node's next to that of the head's node in case the head points to an existing node
+	//set new node's next to the head node's next in case the head points to an existing node
 	tempNode->SetNextNode(this->head); 
 	
 	this->head = tempNode;

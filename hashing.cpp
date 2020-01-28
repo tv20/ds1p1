@@ -1,3 +1,9 @@
+/***************************************************
+Thati Vang
+hashing.cpp
+Project 1
+***************************************************/
+
 #include "hashing.hpp"
 
 Hashing::Hashing(std::vector<UserData> toHash)
@@ -10,42 +16,57 @@ Hashing::Hashing(std::vector<UserData> toHash)
 		hashNumber = Hash(toHash.at(i).GetUserId());
 		this->linkedList[hashNumber].InsertAtHead(toHash.at(i).GetUserId(),toHash.at(i).GetEncryptedPw());		
 	}
-/*
-	//table used for visualization of linked list
+
+	/*******************************************************
+	table used for visualization of linked list starts below
+	Note: not needed for the project
+	*******************************************************/
 	Node* tempPointer;
-	
+	this->writeLinkedList.open("linkedList.txt");
+
+	if(this->writeLinkedList.fail())
+	{
+		std::cout << "ERROR" << std::endl;
+		exit(-1);
+	}
+
 	for(int i = 0; i < this->TABLESIZE; i++)
 	{
 		tempPointer = linkedList[i].GetHead();
 		
 		if(linkedList[i].GetOccupy())
 		{
-			std::cout << "linkedList[" << i << "]: ";
+			this->writeLinkedList << "linkedList[" << i << "]: ";
 			
 			while(tempPointer != nullptr)
 			{
-				std::cout << std::setw(14) << std::left << tempPointer->GetUserId();
+				this->writeLinkedList << std::setw(14) << std::left << tempPointer->GetUserId();
 				tempPointer = tempPointer->GetNextNode();
 				
 				if(tempPointer == nullptr)
 				{
-					std::cout << std::endl;
+					this->writeLinkedList << std::endl;
 				}
 			}
 		}
 		else
 		{
-			std::cout << "linkedList[" << i << "]: " << std::endl;
+			this->writeLinkedList << "linkedList[" << i << "]: " << std::endl;
 		}
 	}
-*/
+	
+	this->writeLinkedList.close();
+	/*******************************************************
+	table algorithm ends here
+	*******************************************************/
 }
 
 int Hashing::Hash(std::string userId)
 {
-	int hashAlgorithm[] = { 1,  2,  3,  7, 11, 13, 17, 19, 23, 
-                               29, 31, 27, 41, 43, 47, 53, 59, 61, 
-			       67, 71, 73, 79, 83, 91, 97, 101};
+	int hashAlgorithm[] = { 41, 83,   7, 23, 71, 61, 103, 79, 67, 
+                                13, 31, 101, 19,  2, 73,   3, 47, 97, 
+			        59, 53,  17, 89, 11, 37,  29, 43};
+			       //use of prime numbers for randomness
 
 	int digit[userId.length()];
 	int position;
@@ -138,22 +159,25 @@ int Hashing::Hash(std::string userId)
 		digit[i] = hashAlgorithm[position];
 	}
 
-	//need enough memory to store total using the hashing algorithm, ranges from 0 - 2^64
-	unsigned long long int total = 13;
+	unsigned long long int total = 0;
+		//need enough memory to store total using the hashing algorithm
+		//ranges from 0 - 2^64
 
 	for(unsigned int i = 0; i < userId.size(); i++)
 	{
-		if(i % 2 == 0)
+		if(i % 2 != 0)
 		{
-			total = total * digit[i];
+			total = total + (digit[i] * pow(3,i) + 1);
 		}
 		else
 		{
-			total = total + digit[i];
+			total = total + (digit[i] * pow(7,i) - 1);
 		}
+
+		//alternates between each letter with a different formula
 	}	
 	
-//	std::cout << total << std::endl;
+	//std::cout << total << std::endl;
 
 	return total % this->TABLESIZE;
 }
@@ -178,8 +202,7 @@ void Hashing::Test()
 		UserData tempUser(tempName, tempPw, 0);
 		toTest.push_back(tempUser);
 	}
-	std::cout << std::setw(44) << "" << std::setw(20) << "ENCRYPTED" << std::endl;
-	std::cout << std::setw(41) << "" << std::setw(20) << "IN" << std::endl;
+
 	std::cout << std::setw(15) << std::left << "NAME"
 		  << std::setw(20) << std::left << "UNENCRYPTED"
 		  << std::setw(20) << std::left << "ENCRYPTED"
@@ -205,7 +228,8 @@ void Hashing::Test()
 		}
 		
 		toTest.at(i).SetEncryptedPw();
-				
+		
+		//comparing the encrypted passwords, logic will always be if(1)		
 		if(toTest.at(i).GetEncryptedPw() == listPosition->GetEncryptedPw())
 		{
 			
@@ -232,7 +256,7 @@ void Hashing::Test()
 	
 	std::cout << std::endl << "FAIL:" << std::endl << std::endl;
 
-	//test for failing
+	//test for failing after changing one letter
 	for(int i = 0; i < 5; i++)
 	{
 		int afterHash = Hash(toTest.at(i).GetUserId());
@@ -243,9 +267,11 @@ void Hashing::Test()
 			listPosition = listPosition->GetNextNode();
 		}
 		
+		//changes one letter
 		toTest.at(i).ChangeOneLetter();
 		toTest.at(i).SetEncryptedPw();
-			
+		
+		//comparing the passwords, logic will always be if(0)	
 		if(toTest.at(i).GetEncryptedPw() == listPosition->GetEncryptedPw())
 		{
 			std::cout << std::setw(15) << std::left << toTest.at(i).GetUserId()
